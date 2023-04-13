@@ -1,4 +1,4 @@
-# Kursy
+# Courses
 
 ## Scientific Computing with Python (freeCodeCamp):
 ### Arithmetic Formatter [Task](https://www.freecodecamp.org/learn/scientific-computing-with-python/scientific-computing-with-python-projects/arithmetic-formatter); [Solution](https://github.com/barbara-wachek/courses_and_exercises/blob/master/freecodecamp_01_arithmetic_arranger.py)
