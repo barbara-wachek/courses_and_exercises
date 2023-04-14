@@ -1,4 +1,4 @@
-
+#%% Class
 class Category:
     
     def __init__(self, category):
@@ -73,144 +73,94 @@ class Category:
       
         return f'{number_of_stars}{self.category}{number_of_stars}{all_output}\nTotal: {self.total}'
         
-
-
-#categories = [food, entertainment, business]
+#%% Function
 def create_spend_chart(categories):
     
     list_of_expenses_for_category =  []
     list_of_percentage_for_category = []
+    list_of_rounded_percentages = []
     sum_of_all_expenses = 0 
     category_names = []
     
     for x in categories:
-        
         category_name = x.category
-        ledger = x.ledger
         expenses = 0
         category_names.append(category_name)
         
         for y in x.ledger:
             for k,v in y.items():
-                if isinstance(v, float) and v < 0:
+                if (isinstance(v, float) or isinstance(v, int)) and v < 0:
                     expenses = expenses + abs(v)
                     
         list_of_expenses_for_category.append({category_name:expenses})
-   
         
     for x in list_of_expenses_for_category:
         for k, v in x.items():
             sum_of_all_expenses = sum_of_all_expenses + v
-            
-   
-        
+                         
     for x in list_of_expenses_for_category:
         for k, v in x.items(): 
             percentage_for_category = int((v/sum_of_all_expenses)*100)
-            
             list_of_percentage_for_category.append({k:percentage_for_category})
               
-    
     for x in list_of_percentage_for_category:        
         for k,v in x.items():
-           # v = 10
             new_value = (v//10)*10
-            x[k] = new_value
-
-
-    # number_of_o_in_one_row = len(categories)
-    # if number_of_o_in_one_row == 4: 
-    #     a = 'o'
-    #     b = 'o'
-    #     c = 'o'
-    #     d = 'o'
-    # if number_of_o_in_one_row == 3: 
-    #     a = 'o'
-    #     b = 'o'
-    #     c = 'o'
-    #     d = ''
-    # if number_of_o_in_one_row == 2:    
-    #     a = 'o'
-    #     b = 'o'
-    #     c = ''
-    #     d = ''
-    
+            list_of_rounded_percentages.append(new_value)
+             
+    #Chart
     title = f'Percentage spent by category\n'   
-    first_row = f'100| {a} {b} {c} {d}|\n'
+    chart = ""
+    for value in reversed(range(0, 101, 10)):
+        chart += str(value).rjust(3) + '|'
+        for x in list_of_rounded_percentages:
+            if x >= value:
+                chart += " o "
+            else:
+                chart += "   "
+            
+        chart += " \n" 
+           
+    footer = "    " + "-" * ((3 * len(categories)) + 1) + "\n"
+    max_length = max(map(lambda x: len(x), category_names))
+    category_names_with_spaces = list(map(lambda name: name.ljust(max_length), category_names))
 
-    
-    category_names = [business.category, food.category, entertainment.category]
-    thirteen_row = f'{category_names[0][0]} {category_names[1][0]} {category_names[2][0]} '    
-     
-    number_of_o_for_all_categories = []
-    for x in list_of_percentage_for_category:
-        for k,v in x.items():
-             number_of_o_for_all_categories.append({k:(v+10)/10})
-                
-    
-     
-        
-        
-    #return list_of_percentage_for_category 
-    return f'Percentage spent by category\n100|\n 90|\n 80|\n 70|\n 60|\n 50|\n 40|\n 30|\n 20|\n 10|\n  0|\n    ----------'
- 
+    for x in zip(*category_names_with_spaces):
+        footer += "    " + "".join(map(lambda s: s.center(3), x)) + " \n"
+
+    return (title + chart + footer).rstrip("\n")
 
 
-            f'''Percentage spent by category\n100 {a}{b}{c}{d}|\n
-            90|\n 80|\n 70|\n 60|\n 50|\n 40|\n 30|\n 20|\n 10|\n  0|\n    ----------'''
 
 
 #%%TEST
-        food = Category('Food')
-        entertainment = Category('Entertainment')
-        business = Category('Business')
-        
-        food.deposit(900, "deposit")
-        entertainment.deposit(900, "deposit")
-        business.deposit(900, "deposit")
-        
-        food.withdraw(105.55)
-        entertainment.withdraw(33.40)
-        business.withdraw(10.99)
-        
-        
-        food.ledger
-        business.ledger
-        entertainment.ledger
-        
-        
-        actual = create_spend_chart([business, food, entertainment])
-        
-        
-        expected = "Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  "
-        
-        
-        self.assertEqual(actual, expected, 'Expected different chart representation. Check that all spacing is exact.')
+food = Category('Food')
+entertainment = Category('Entertainment')
+business = Category('Business')
 
-   
-create_spend_chart([food, clothing, auto])
+food.deposit(900, "deposit")
+entertainment.deposit(900, "deposit")
+business.deposit(900, "deposit")
+
+food.withdraw(105.55)
+entertainment.withdraw(33.40)
+business.withdraw(10.99)
 
 
-
-    
-    # for x in categories: 
-    #     name_of_category = x.category
-    #     #expenses = x.ledger[amount]
-    #     total_expenses = total_expenses + expenses
-        
-    # for y in categories:
-    #     percentage = 
-        
-        
-    # return f'Percentage spent by category\n100 |'
+food.ledger
+business.ledger
+entertainment.ledger
 
 
+actual = create_spend_chart([business, food, entertainment]) 
+
+print(create_spend_chart([business, food, entertainment]))
 
 
+expected = "Percentage spent by category\n100|          \n 90|          \n 80|          \n 70|    o     \n 60|    o     \n 50|    o     \n 40|    o     \n 30|    o     \n 20|    o  o  \n 10|    o  o  \n  0| o  o  o  \n    ----------\n     B  F  E  \n     u  o  n  \n     s  o  t  \n     i  d  e  \n     n     r  \n     e     t  \n     s     a  \n     s     i  \n           n  \n           m  \n           e  \n           n  \n           t  "
 
-print_output = f'Percentage spent by category\n100|\n 90|\n 80|\n 70|\n 60|\n 50|\n 40|\n 30|\n 20|\n 10|\n  0|\n    ----------'
-print(print_output)
 
+actual == expected 
 
 
 #%%Main
@@ -253,48 +203,3 @@ print(auto)
 print(create_spend_chart([food, clothing, auto]))
 
 
-
-
-
-# entertainment = Category('Entertainment')
-# entertainment.deposit(500)
-
-# entertainment.withdraw(25, 'Cinema')
-# entertainment.withdraw(100, 'Ski')
-
-# entertainment.ledger
-
-# categories = [food, clothing]
-
-
-# clothing = Category('Clothing')
-
-
-
-    
-    
-    
-    
-#%% main (z zadania)
-    
-food = budget.Category("Food")
-food.deposit(1000, "initial deposit")
-food.withdraw(10.15, "groceries")
-food.withdraw(15.89, "restaurant and more food for dessert")
-print(food.get_balance())
-clothing = budget.Category("Clothing")
-
-food.transfer(50, clothing)
-clothing.withdraw(25.55)
-clothing.withdraw(100)
-auto = budget.Category("Auto")
-auto.deposit(1000, "initial deposit")
-auto.withdraw(15)
-
-print(food)
-print(clothing)
-
-print(create_spend_chart([food, clothing, auto]))
-
-# Run unit tests automatically
-main(module='test_module', exit=False)
