@@ -24,11 +24,11 @@ class Rectangle():
     def get_picture(self): 
         
         if self.width > 50 or self.height > 50:
-            return "Too big for picture"
+            return "Too big for picture."
         
         number_of_asterisks_in_one_line = self.width * '*'
        
-        print((f'{number_of_asterisks_in_one_line}'+'\n')*self.height)
+        return ((f'{number_of_asterisks_in_one_line}'+'\n')*self.height)
 
     def get_amount_inside(self, another_width, another_height): 
         
@@ -100,6 +100,7 @@ print(rect.get_picture())
 sq = Square(9)
 print(sq.get_area())
 sq.set_side(4)
+sq.set_side(2)
 print(sq.get_diagonal())
 print(sq)
 print(sq.get_picture())
@@ -107,6 +108,31 @@ print(sq.get_picture())
 rect.set_height(8)
 rect.set_width(16)
 print(rect.get_amount_inside(sq))
+
+
+
+#%% Testy niezaliczone
+
+
+
+def test_get_amount_inside_none(self):
+        rect2 = shape_calculator.Rectangle(2, 3)
+        actual = rect2.get_amount_inside(self.rect)
+        expected = 0
+        self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 0.')
+
+       
+def test_get_amount_inside_two_rectangles(self):
+       rect2 = shape_calculator.Rectangle(4, 8)
+       actual = rect2.get_amount_inside(self.rect)
+       expected = 1
+       self.assertEqual(actual, expected, 'Expected `get_amount_inside` to return 1.')
+
+
+
+
+
+
 
 
 
